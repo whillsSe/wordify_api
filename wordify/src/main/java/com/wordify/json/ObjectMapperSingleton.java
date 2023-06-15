@@ -10,4 +10,5 @@ public class ObjectMapperSingleton {
     public static ObjectMapper getInstance() {
         return instance;
     }
+     
 }

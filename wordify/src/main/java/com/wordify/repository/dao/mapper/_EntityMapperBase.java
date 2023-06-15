@@ -11,6 +11,7 @@ public abstract class _EntityMapperBase<T> {
             T dto = createDto(rs);
             dtoList.add(dto);
         }
+        System.out.println("Mapping has ended!");
         return dtoList;
     }
    abstract T createDto(ResultSet rs) throws SQLException;

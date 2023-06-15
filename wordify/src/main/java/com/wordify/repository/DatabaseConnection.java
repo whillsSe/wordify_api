@@ -1,5 +1,4 @@
 package com.wordify.repository;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -16,10 +15,12 @@ public class DatabaseConnection implements AutoCloseable {
     private String user;
     private String password;
     
-    private DatabaseConnection() {
+    private DatabaseConnection() throws  NoSuchMethodException, SecurityException, ClassNotFoundException {
         Properties prop = new Properties();
         ClassLoader classLoader = getClass().getClassLoader();
+        Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor();
         try (InputStream input = classLoader.getResourceAsStream("config.properties")) {
+            //Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor();
             prop.load(input);
             this.host = prop.getProperty("db.host");
             this.port = prop.getProperty("db.port");
@@ -31,28 +32,36 @@ public class DatabaseConnection implements AutoCloseable {
         }
     }
     
-    public static synchronized DatabaseConnection getInstance() {
+    public static synchronized DatabaseConnection getInstance() throws ClassNotFoundException{
         if (instance == null) {
-            instance = new DatabaseConnection();
+            try {
+                instance = new DatabaseConnection();
+            } catch (NoSuchMethodException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (SecurityException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         return instance;
     }
 
-    public Connection getConnection(){
-        if (connection == null) {
+    public Connection getConnection() throws SQLException{
+        if (connection == null || connection.isClosed()) {
             String url = "jdbc:mysql://" + host + ":" + port + "/" + dbName;
             try {
-                connection = DriverManager.getConnection(url, user, password);
+                connection = DriverManager.getConnection(url+"?user="+ user+"&password="+password);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return connection;
     }
-    
+
     @Override
     public void close() throws SQLException {
-        if (connection != null) {
+        if (connection != null && !connection.isClosed()) {
             connection.close();
         }
     }

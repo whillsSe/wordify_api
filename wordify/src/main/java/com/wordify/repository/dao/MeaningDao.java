@@ -11,7 +11,7 @@ public class MeaningDao extends _DefinitionElementDaoBase<MeaningDto, MeaningsMa
 
     @Override
     protected String getTableName() {
-        return "meanings"; // 意味テーブルのテーブル名を返す
+        return "meaning"; // 意味テーブルのテーブル名を返す
     }
 
     @Override

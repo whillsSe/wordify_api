@@ -9,7 +9,7 @@ public class MeaningsMapperAsDefinitionElement extends _DefinitionElementMapperB
 
     @Override
     protected MeaningDto createDto(ResultSet rs) throws SQLException {
-        int id = rs.getInt("id");
+        int id = rs.getInt("definition_id");
         String meaning = rs.getString("meaning");
         return new MeaningDto(id, meaning);
     }

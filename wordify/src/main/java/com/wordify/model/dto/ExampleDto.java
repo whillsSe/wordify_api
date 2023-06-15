@@ -1,5 +1,7 @@
 package com.wordify.model.dto;
 
+import com.wordify.model.dto.common.BaseDto;
+
 public class ExampleDto implements BaseDto{
     private int id;
     private String example;
